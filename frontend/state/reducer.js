@@ -5,7 +5,8 @@ import {
   MOVE_COUNTERCLOCKWISE,
   SET_QUIZ_INTO_STATE,
   GET_QUIZ_ERROR,
-  GET_QUIZ_SUCCESS
+  SET_SELECTED_ANSWER,
+  SET_INFO_MESSAGE
 } from './action-creators'
 
 const initialWheelState = 0
@@ -25,11 +26,6 @@ function quiz(state = initialQuizState, action) {
   switch(action.type) {
     case SET_QUIZ_INTO_STATE:
       return action.payload
-    case GET_QUIZ_SUCCESS:
-      return {
-        ...state,
-        quiz: action.payload
-      }
     case GET_QUIZ_ERROR:
       return {
         ...state, 
@@ -42,14 +38,23 @@ function quiz(state = initialQuizState, action) {
 
 const initialSelectedAnswerState = null
 function selectedAnswer(state = initialSelectedAnswerState, action) {
-  return state
+  switch(action.type) {
+    case SET_SELECTED_ANSWER:
+      return action.payload
+    default:
+      return state
+  }
 }
 
 const initialMessageState = ''
 function infoMessage(state = initialMessageState, action) {
+  switch(action.type) {
+    case SET_INFO_MESSAGE:
+      return action.payload
+    default:
   return state
+  }
 }
-
 const initialFormState = {
   newQuestion: '',
   newTrueAnswer: '',
