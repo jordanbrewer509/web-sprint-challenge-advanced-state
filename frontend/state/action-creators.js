@@ -35,9 +35,13 @@ const getQuizError = (message) => {
   return {type: GET_QUIZ_ERROR, payload: message}
 }
 
-export function inputChange() { }
+export function inputChange(state) {
+  return { type: INPUT_CHANGE, payload: state}
+}
 
-export function resetForm() { }
+export function resetForm() {
+  return { type: RESET_FORM }
+}
 
 // ❗ Async action creators
 export function fetchQuiz() {
@@ -85,11 +89,23 @@ export function postAnswer(state) {
     
   }
 }
-export function postQuiz() {
+export function postQuiz(state) {
   return function (dispatch) {
+    console.log(state, 'STATE')
     // On successful POST:
     // - Dispatch the correct message to the the appropriate state
     // - Dispatch the resetting of the form
+    axios.post("http://localhost:9000/api/quiz/new", {
+      question_text: state.newQuestion,
+      true_answer_text: state.newTrueAnswer,
+      false_answer_text: state.newFalseAnswer
+    })
+    .then(() => {
+      dispatch(setMessage(`Congrats: "${state.newQuestion}" is a great question!`))
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   }
 }
 // ❗ On promise rejections, use log statements or breakpoints, and put an appropriate error message in state

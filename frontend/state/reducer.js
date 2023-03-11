@@ -6,7 +6,9 @@ import {
   SET_QUIZ_INTO_STATE,
   GET_QUIZ_ERROR,
   SET_SELECTED_ANSWER,
-  SET_INFO_MESSAGE
+  SET_INFO_MESSAGE,
+  INPUT_CHANGE,
+  RESET_FORM
 } from './action-creators'
 
 const initialWheelState = 0
@@ -61,7 +63,20 @@ const initialFormState = {
   newFalseAnswer: '',
 }
 function form(state = initialFormState, action) {
-  return state
+  switch(action.type) {
+    case INPUT_CHANGE:
+      if(action.payload.id === "newQuestion") {
+        return {...state, newQuestion: action.payload.value}
+      } else if(action.payload.id === "newTrueAnswer") {
+        return {...state, newTrueAnswer: action.payload.value}
+      } else if(action.payload.id === "newFalseAnswer") {
+        return {...state, newFalseAnswer: action.payload.value}
+      }
+    case RESET_FORM: 
+      return initialFormState
+  default:
+    return state
+  }
 }
 
 export default combineReducers({ wheel, quiz, selectedAnswer, infoMessage, form })
